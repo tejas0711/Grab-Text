@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Grab Text
 
 Grab Text is a Manifest V3 Chrome extension that lets you select a visible
@@ -21,3 +22,7 @@ traineddata is downloaded on first use and cached for later use. Only
 traineddata is downloaded; executable code and the OCR engine are included in
 the extension. Third-party notices for the bundled Tesseract.js runtime are
 in `vendor/tesseract`.
+=======
+# Copy-Text-Chrome-Extension
+It is a chrome extension use to copy text from any youtube video, webpage, social media platform etc.  by just using your keyboard keys such as CTRL+SHIFT+E. 
+>>>>>>> 67880fd24873eee50e179e4b2d7e6cc0dd872031
