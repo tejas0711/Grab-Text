@@ -1,0 +1,13 @@
+{
+  "name": "grab-text-extension",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local OCR runtime dependencies for the Grab Text Chrome extension.",
+  "scripts": {
+    "vendor": "node scripts/vendor.js"
+  },
+  "dependencies": {
+    "tesseract.js": "5.1.1",
+    "tesseract.js-core": "5.1.1"
+  }
+}

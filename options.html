@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grab Text options</title>
+    <style>
+      body { max-width: 520px; margin: 48px auto; padding: 0 20px; color: #202124; font: 15px/1.5 system-ui, sans-serif; }
+      h1 { font-size: 24px; }
+      label { display: block; margin: 24px 0 8px; font-weight: 600; }
+      select { min-width: 220px; padding: 8px; font: inherit; }
+      #status { min-height: 1.5em; color: #5f6368; }
+    </style>
+  </head>
+  <body>
+    <h1>Grab Text</h1>
+    <p>Choose the language in the selected region. English is bundled; other language data is downloaded and cached on first use.</p>
+    <label for="language">OCR language</label>
+    <select id="language">
+      <option value="eng">English</option>
+      <option value="deu">German</option>
+      <option value="spa">Spanish</option>
+      <option value="fra">French</option>
+      <option value="ita">Italian</option>
+      <option value="por">Portuguese</option>
+    </select>
+    <p id="status" role="status"></p>
+    <script src="options.js"></script>
+  </body>
+</html>
