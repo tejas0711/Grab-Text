@@ -45,28 +45,19 @@ async function recognizeSelection(tab, selection) {
     if (!response?.ok) throw new Error(response?.error || "OCR did not return text.");
     if (!response.text?.trim()) throw new Error("No text was recognized. Try selecting a larger or clearer area.");
 
-    let copied = false;
+    let copied;
     try {
-      const result = await chrome.tabs.sendMessage(tab.id, {
-        type: "OCR_RESULT",
+      const result = await chrome.runtime.sendMessage({
+        type: "COPY_TEXT",
         text: response.text
       });
-      copied = result?.copied === true;
-    } catch (error) {
-      console.warn("Grab Text could not copy from the page; trying the offscreen clipboard:", error);
-    }
-
-    if (!copied) {
-      try {
-        const fallback = await chrome.runtime.sendMessage({
-          type: "COPY_TEXT",
-          text: response.text
-        });
-        copied = fallback?.ok === true;
-        if (!copied) console.error("Grab Text offscreen clipboard failed:", fallback?.error);
-      } catch (error) {
-        console.error("Grab Text offscreen clipboard failed:", error);
+      copied = result?.ok === true;
+      if (!copied) {
+        throw new Error(result?.error || "The clipboard write was not successful.");
       }
+    } catch (error) {
+      console.error("Grab Text could not write to the clipboard:", error);
+      throw new Error(`Could not copy recognized text: ${error.message}`);
     }
 
     await showToast(tab.id, copied, response.text);
@@ -94,6 +85,6 @@ async function ensureOffscreen() {
   await chrome.offscreen.createDocument({
     url: OFFSCREEN_PATH,
     reasons: ["CLIPBOARD", "WORKERS"],
-    justification: "Run local OCR and provide a clipboard fallback."
+    justification: "Run local OCR and copy recognized text to the clipboard."
   });
 }

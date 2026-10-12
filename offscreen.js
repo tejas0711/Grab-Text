@@ -10,13 +10,45 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     return true;
   }
   if (message.type === "COPY_TEXT") {
-    navigator.clipboard.writeText(message.text).then(
+    copyText(message.text).then(
       () => sendResponse({ ok: true }),
-      (error) => sendResponse({ ok: false, error: error.message })
+      (error) => {
+        console.error("Grab Text clipboard write failed:", error);
+        sendResponse({ ok: false, error: error.message });
+      }
     );
     return true;
   }
 });
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return;
+  } catch (clipboardError) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    Object.assign(textarea.style, {
+      position: "fixed",
+      opacity: "0"
+    });
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      if (!document.execCommand("copy")) {
+        throw new Error("The browser did not accept the clipboard copy command.");
+      }
+    } catch (fallbackError) {
+      throw new Error(
+        `Clipboard API failed: ${clipboardError.message}; fallback failed: ${fallbackError.message}`
+      );
+    } finally {
+      textarea.remove();
+    }
+  }
+}
 
 async function recognize({ image, selection, language }) {
   if (!language || (language !== "eng" && !await chrome.permissions.contains({

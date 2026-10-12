@@ -10,12 +10,6 @@
     if (message.type === "START_SELECTION") {
       beginSelection();
       sendResponse({ ok: true });
-    } else if (message.type === "OCR_RESULT") {
-      navigator.clipboard.writeText(message.text).then(
-        () => sendResponse({ copied: true }),
-        () => sendResponse({ copied: false })
-      );
-      return true;
     } else if (message.type === "SHOW_TOAST") {
       showToast(message.copied, message.preview);
     }
